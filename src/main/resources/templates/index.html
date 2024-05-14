@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Commeow Chat</title>
+    <title>Chat</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -107,19 +107,25 @@
     const chatWebSocket = new WebSocket('ws://' + location.host + '/ws-chat');
     const inputMessage = document.getElementById('inputMessage');
     const messageList = document.getElementById('message-list');
-    document.addEventListener('DOMContentLoaded', function() {
-        const inputMessage = document.getElementById('inputMessage');
-
-        inputMessage.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        });
-    });
+    document.addEventListener('keypress',function (event){
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    })
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const inputMessage = document.getElementById('inputMessage');
+    //
+    //     inputMessage.addEventListener('keypress', function(event) {
+    //         if (event.key === 'Enter') {
+    //             sendMessage();
+    //         }
+    //     });
+    // });
     chatWebSocket.onmessage = function(event) {
         const li = document.createElement('li');
         li.innerText = event.data;
         messageList.appendChild(li);
+        messageList.scrollTop = messageList.scrollHeight;
     };
 
     chatWebSocket.onclose = function(event) {
@@ -139,18 +145,20 @@
         };
         chatWebSocket.send(JSON.stringify(messageObject));
         inputMessage.value = '';
-    }
+        inputMessage.focus();
 
-    function confirmUsername() {
-        const usernameInput = document.getElementById("username");
-        const confirmButton = document.getElementById("confirmUsername");
-
-        if (usernameInput.value.trim() !== '') {
-            usernameInput.disabled = true;
-            confirmButton.disabled = true;
-            confirmButton.style.backgroundColor = "gray";
-        }
     }
+    //
+    // function confirmUsername() {
+    //     const usernameInput = document.getElementById("username");
+    //     const confirmButton = document.getElementById("confirmUsername");
+    //
+    //     if (usernameInput.value.trim() !== '') {
+    //         usernameInput.disabled = true;
+    //         confirmButton.disabled = true;
+    //         confirmButton.style.backgroundColor = "gray";
+    //     }
+    // }
 </script>
 </body>
 </html>
